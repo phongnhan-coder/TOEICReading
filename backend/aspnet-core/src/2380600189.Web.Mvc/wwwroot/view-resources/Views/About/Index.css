@@ -1,0 +1,311 @@
+﻿.toeic-about-heading {
+  background: #fff;
+  border-bottom: 1px solid #e4eaf2;
+  padding: 24px 0 20px;
+}
+
+.toeic-about-heading .container-fluid,
+.toeic-about > .container-fluid {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1280px;
+  padding-left: clamp(16px, 3vw, 36px);
+  padding-right: clamp(16px, 3vw, 36px);
+}
+
+.toeic-about-eyebrow {
+  color: #075cc8;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 750;
+  gap: 7px;
+  letter-spacing: 0.09em;
+  margin-bottom: 8px;
+}
+
+.toeic-about-heading h1 {
+  color: #17243a;
+  font-size: clamp(24px, 3vw, 31px);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  margin: 0 0 5px;
+}
+
+.toeic-about-heading p {
+  color: #718096;
+  margin: 0;
+}
+
+.toeic-about {
+  padding-top: 22px;
+}
+
+.toeic-about-hero {
+  align-items: center;
+  background: linear-gradient(118deg, #0754b5, #0877df);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(7, 82, 176, 0.16);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  min-height: 245px;
+  overflow: hidden;
+  padding: clamp(24px, 4vw, 42px);
+  position: relative;
+}
+
+.toeic-about-hero::after {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  content: "";
+  height: 310px;
+  position: absolute;
+  right: 50px;
+  top: -150px;
+  width: 310px;
+}
+
+.toeic-about-hero-copy {
+  max-width: 620px;
+  position: relative;
+  z-index: 1;
+}
+
+.toeic-about-pill {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.21);
+  border-radius: 20px;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+  padding: 7px 10px;
+}
+
+.toeic-about-hero h2 {
+  font-size: clamp(25px, 3.4vw, 36px);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  line-height: 1.18;
+  margin: 0 0 11px;
+}
+
+.toeic-about-hero p {
+  color: rgba(255, 255, 255, 0.84);
+  line-height: 1.65;
+  margin: 0 0 18px;
+  max-width: 560px;
+}
+
+.toeic-about-button {
+  align-items: center;
+  background: #fff;
+  border-radius: 9px;
+  color: #075cc8;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 8px;
+  padding: 11px 14px;
+  text-decoration: none;
+}
+
+.toeic-about-button:hover {
+  background: #edf5ff;
+  color: #064da8;
+}
+
+.toeic-about-hero-mark {
+  align-items: center;
+  color: rgba(255, 255, 255, 0.93);
+  display: flex;
+  flex: 0 0 230px;
+  flex-direction: column;
+  font-size: 11px;
+  font-weight: 750;
+  gap: 12px;
+  letter-spacing: 0.17em;
+  line-height: 1.5;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.toeic-about-hero-mark i {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  display: flex;
+  font-size: 42px;
+  height: 108px;
+  justify-content: center;
+  width: 108px;
+}
+
+.toeic-about-section-title {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  margin: 26px 0 13px;
+}
+
+.toeic-about-section-title h2 {
+  color: #17243a;
+  font-size: 17px;
+  font-weight: 750;
+  margin: 0 0 4px;
+}
+
+.toeic-about-section-title p {
+  color: #718096;
+  font-size: 13px;
+  margin: 0;
+}
+
+.toeic-about-grid {
+  display: grid;
+  gap: 13px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.toeic-about-card {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e1e7ef;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(28, 52, 84, 0.04);
+  color: #17243a;
+  display: flex;
+  gap: 13px;
+  min-width: 0;
+  padding: 16px;
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.toeic-about-card:hover {
+  border-color: #a9c9ee;
+  color: #075cc8;
+  transform: translateY(-1px);
+}
+
+.toeic-about-card-icon {
+  align-items: center;
+  background: #eaf2ff;
+  border-radius: 10px;
+  color: #075cc8;
+  display: inline-flex;
+  flex: 0 0 40px;
+  height: 40px;
+  justify-content: center;
+}
+
+.toeic-about-card-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.toeic-about-card-copy strong,
+.toeic-about-card-copy small {
+  display: block;
+}
+
+.toeic-about-card-copy strong {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.toeic-about-card-copy small {
+  color: #718096;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.toeic-about-arrow {
+  color: #8b98aa;
+  font-size: 12px;
+}
+
+.toeic-about-status {
+  align-items: flex-start;
+  background: #eef5ff;
+  border: 1px solid #d9e8fa;
+  border-radius: 11px;
+  color: #26466f;
+  display: flex;
+  gap: 11px;
+  line-height: 1.6;
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.toeic-about-status-icon {
+  align-items: center;
+  background: #d8eaff;
+  border-radius: 50%;
+  color: #075cc8;
+  display: inline-flex;
+  flex: 0 0 24px;
+  height: 24px;
+  justify-content: center;
+}
+
+.toeic-about-status strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.toeic-about-status p {
+  font-size: 12px;
+  margin: 0;
+}
+
+.toeic-about-account-links {
+  align-items: center;
+  color: #718096;
+  display: flex;
+  font-size: 12px;
+  gap: 9px;
+  justify-content: flex-end;
+  padding: 18px 0 8px;
+}
+
+.toeic-about-account-links a {
+  color: #075cc8;
+  font-weight: 650;
+}
+
+@media (max-width: 700px) {
+  .toeic-about-heading {
+    padding: 17px 0 15px;
+  }
+
+  .toeic-about {
+    padding-top: 13px;
+  }
+
+  .toeic-about-hero {
+    border-radius: 13px;
+    min-height: 0;
+    padding: 22px 18px;
+  }
+
+  .toeic-about-hero-mark {
+    display: none;
+  }
+
+  .toeic-about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toeic-about-card {
+    padding: 13px;
+  }
+
+  .toeic-about-account-links {
+    justify-content: center;
+  }
+}

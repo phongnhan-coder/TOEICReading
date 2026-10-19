@@ -1,0 +1,94 @@
+﻿@using TOEICReading.Web.Startup
+@{
+    ViewBag.CurrentPageName = PageNames.About;
+    ViewBag.Title = "Về TOEIC Reading";
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/view-resources/Views/About/Index.css" asp-append-version="true" />
+}
+
+<section class="content-header toeic-about-heading">
+    <div class="container-fluid">
+        <span class="toeic-about-eyebrow"><i class="fas fa-book-open" aria-hidden="true"></i> NỀN TẢNG HỌC TẬP</span>
+        <h1>TOEIC Reading</h1>
+        <p>Không gian quản lý và luyện tập kỹ năng đọc hiểu TOEIC.</p>
+    </div>
+</section>
+
+<section class="content toeic-about">
+    <div class="container-fluid">
+        <div class="toeic-about-hero">
+            <div class="toeic-about-hero-copy">
+                <span class="toeic-about-pill">HỌC TẬP · ĐÁNH GIÁ · TIẾN BỘ</span>
+                <h2>Rèn kỹ năng đọc hiểu<br />từng bước vững chắc</h2>
+                <p>TOEIC Reading tập trung vào ngân hàng đề, tổ chức bài kiểm tra và hỗ trợ người học theo dõi kết quả. Hãy chọn khu vực phù hợp để tiếp tục.</p>
+                <a class="toeic-about-button" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-th-large" aria-hidden="true"></i> Mở không gian TOEIC
+                </a>
+            </div>
+            <div class="toeic-about-hero-mark" aria-hidden="true">
+                <i class="fas fa-book-reader"></i>
+                <span>READ<br />WITH<br />CONFIDENCE</span>
+            </div>
+        </div>
+
+        <div class="toeic-about-section-title">
+            <div>
+                <h2>Khu vực hệ thống</h2>
+                <p>Các trang bên dưới được cung cấp bởi ứng dụng hiện tại.</p>
+            </div>
+        </div>
+
+        <div class="toeic-about-grid">
+            <a class="toeic-about-card" asp-controller="Home" asp-action="Index">
+                <span class="toeic-about-card-icon"><i class="fas fa-chart-pie" aria-hidden="true"></i></span>
+                <span class="toeic-about-card-copy">
+                    <strong>Không gian TOEIC</strong>
+                    <small>Mở dashboard quản trị và chế độ xem học viên hiện có.</small>
+                </span>
+                <i class="fas fa-arrow-right toeic-about-arrow" aria-hidden="true"></i>
+            </a>
+            <a class="toeic-about-card" asp-controller="Users" asp-action="Index">
+                <span class="toeic-about-card-icon"><i class="fas fa-users" aria-hidden="true"></i></span>
+                <span class="toeic-about-card-copy">
+                    <strong>Người dùng</strong>
+                    <small>Quản lý tài khoản theo quyền được cấp.</small>
+                </span>
+                <i class="fas fa-arrow-right toeic-about-arrow" aria-hidden="true"></i>
+            </a>
+            <a class="toeic-about-card" asp-controller="Roles" asp-action="Index">
+                <span class="toeic-about-card-icon"><i class="fas fa-user-shield" aria-hidden="true"></i></span>
+                <span class="toeic-about-card-copy">
+                    <strong>Vai trò và quyền</strong>
+                    <small>Quản lý role, permission và phân quyền hệ thống.</small>
+                </span>
+                <i class="fas fa-arrow-right toeic-about-arrow" aria-hidden="true"></i>
+            </a>
+            <a class="toeic-about-card" asp-controller="Tenants" asp-action="Index">
+                <span class="toeic-about-card-icon"><i class="fas fa-building" aria-hidden="true"></i></span>
+                <span class="toeic-about-card-copy">
+                    <strong>Đơn vị</strong>
+                    <small>Quản lý tenant nếu tính năng multi-tenancy được bật.</small>
+                </span>
+                <i class="fas fa-arrow-right toeic-about-arrow" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div class="toeic-about-status" role="status">
+            <span class="toeic-about-status-icon"><i class="fas fa-info" aria-hidden="true"></i></span>
+            <div>
+                <strong>Phạm vi dữ liệu hiện tại</strong>
+                <p>Quản lý người dùng, vai trò và đơn vị dùng backend hiện có. Dashboard TOEIC và luồng làm bài vẫn là giao diện prototype; đề thi, câu hỏi, import Word và kết quả chưa được lưu hoặc đọc từ cơ sở dữ liệu.</p>
+            </div>
+        </div>
+
+        <div class="toeic-about-account-links">
+            <span>Cần đổi tài khoản?</span>
+            <a asp-controller="Account" asp-action="Login">Đăng nhập</a>
+            <span aria-hidden="true">·</span>
+            <a asp-controller="Account" asp-action="Register">Đăng ký</a>
+        </div>
+    </div>
+</section>

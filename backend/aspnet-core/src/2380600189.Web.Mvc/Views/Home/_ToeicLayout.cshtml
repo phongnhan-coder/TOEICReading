@@ -1,0 +1,25 @@
+﻿@using Abp.Web.Security.AntiForgery
+@using TOEICReading.Web.Resources
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IWebResourceManager WebResourceManager
+@{
+    AbpAntiForgeryManager.SetCookie(Context);
+    var pageTitle = !string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title + " / " : "";
+    pageTitle += "TOEIC Reading";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@pageTitle</title>
+    <partial name="~/Views/Shared/Layout/_Styles.cshtml" />
+    @RenderSection("styles", required: false)
+</head>
+<body class="toeic-app">
+    @RenderBody()
+    <partial name="~/Views/Shared/Layout/_Scripts.cshtml" />
+    @RenderSection("scripts", required: false)
+    @WebResourceManager.RenderScripts()
+</body>
+</html>

@@ -1,0 +1,325 @@
+﻿@{
+    Layout = "_ToeicLayout";
+    ViewBag.Title = "TOEIC Reading";
+    ViewBag.CurrentPageName = "Home";
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/view-resources/Views/Home/Index.css" asp-append-version="true" />
+}
+
+@section scripts
+{
+    <script src="~/view-resources/Views/_Bundles/home-index.min.js" asp-append-version="true"></script>
+}
+
+<div class="toeic-workspace" id="toeicWorkspace" data-mode="admin">
+    <header class="toeic-topbar">
+        <a class="toeic-brand" asp-controller="Home" asp-action="Index">
+            <span class="toeic-brand-mark"><i class="fas fa-book-open" aria-hidden="true"></i></span>
+            <span>TOEIC Reading</span>
+        </a>
+        <input class="toeic-topbar-search" type="search" placeholder="Tìm đề thi, mã đề hoặc học viên..." aria-label="Tìm kiếm" />
+        <div class="toeic-user">
+            <span class="toeic-avatar" aria-hidden="true">LN</span>
+            <span><strong>TS. Lê Hoàng Nam</strong><br /><small class="toeic-subtext">Quản trị viên</small></span>
+        </div>
+        <button class="toeic-switch" id="modeSwitch" type="button">Chuyển sang học viên</button>
+    </header>
+
+    <div class="toeic-shell">
+        <aside class="toeic-sidebar" aria-label="Điều hướng quản trị">
+            <div class="toeic-side-label">Không gian làm việc</div>
+            <a class="toeic-side-link active" href="#admin-dashboard" data-admin-nav="dashboard"><i class="fas fa-th-large" aria-hidden="true"></i> Tổng quan đề thi</a>
+            <a class="toeic-side-link" href="#exam-editor" data-open-editor><i class="fas fa-file-alt" aria-hidden="true"></i> Tạo đề thi mới</a>
+            <div class="toeic-side-label">Quản trị hệ thống</div>
+            <a class="toeic-side-link" asp-controller="Users" asp-action="Index"><i class="fas fa-users" aria-hidden="true"></i> Người dùng</a>
+            <a class="toeic-side-link" asp-controller="Roles" asp-action="Index"><i class="fas fa-user-shield" aria-hidden="true"></i> Vai trò</a>
+            <a class="toeic-side-link" asp-controller="Tenants" asp-action="Index"><i class="fas fa-building" aria-hidden="true"></i> Đơn vị</a>
+            <div class="toeic-sidebar-note">
+                <strong>Chế độ xem thử</strong><br />
+                Các đề và kết quả trên trang này là dữ liệu minh họa, chưa kết nối chức năng TOEIC ở backend.
+            </div>
+        </aside>
+
+        <main class="toeic-main">
+            <section id="adminWorkspace">
+                <div data-admin-screen="dashboard">
+                    <div class="toeic-breadcrumb">Trang chủ &nbsp;›&nbsp; Ngân hàng đề thi</div>
+                    <div class="toeic-page-heading">
+                        <div>
+                            <h1>Ngân hàng đề thi</h1>
+                            <p>Quản lý đề TOEIC Reading và theo dõi tiến độ học viên.</p>
+                        </div>
+                        <button class="toeic-btn toeic-btn-primary" type="button" data-open-editor><i class="fas fa-plus" aria-hidden="true"></i> Tạo đề thi mới</button>
+                    </div>
+
+                    <div class="toeic-stats" aria-label="Thống kê đề thi">
+                        <div class="toeic-stat"><span class="toeic-stat-icon"><i class="fas fa-file-alt" aria-hidden="true"></i></span><div><small>Tổng số đề</small><strong>24</strong></div></div>
+                        <div class="toeic-stat"><span class="toeic-stat-icon"><i class="fas fa-check-circle" aria-hidden="true"></i></span><div><small>Đang phát hành</small><strong>08</strong></div></div>
+                        <div class="toeic-stat"><span class="toeic-stat-icon"><i class="fas fa-user-graduate" aria-hidden="true"></i></span><div><small>Lượt làm bài</small><strong>3,420</strong></div></div>
+                        <div class="toeic-stat"><span class="toeic-stat-icon"><i class="fas fa-chart-line" aria-hidden="true"></i></span><div><small>Điểm trung bình</small><strong>365</strong></div></div>
+                    </div>
+
+                    <div class="toeic-card">
+                        <div class="toeic-card-head">
+                            <h2>Danh sách đề thi</h2>
+                            <span class="toeic-status toeic-status-live">Cập nhật gần đây</span>
+                        </div>
+                        <div class="toeic-toolbar">
+                            <input class="toeic-control" type="search" id="examSearch" placeholder="Tìm theo tên đề hoặc mã đề..." aria-label="Tìm đề thi" />
+                            <select class="toeic-control" id="examStatus" aria-label="Lọc theo trạng thái">
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="Đang phát hành">Đang phát hành</option>
+                                <option value="Bản nháp">Bản nháp</option>
+                                <option value="Đã kết thúc">Đã kết thúc</option>
+                            </select>
+                            <button class="toeic-btn" type="button" id="clearExamFilters"><i class="fas fa-undo" aria-hidden="true"></i> Xóa lọc</button>
+                        </div>
+                        <div class="toeic-table-wrap">
+                            <table class="toeic-table">
+                                <thead>
+                                    <tr><th>Mã &amp; tên đề thi</th><th>Thời gian</th><th>Số câu</th><th>Lượt làm</th><th>Trạng thái</th><th>Người tạo</th><th>Thao tác</th></tr>
+                                </thead>
+                                <tbody id="examRows">
+                                    <tr data-exam-row data-status="Đang phát hành">
+                                        <td><span class="toeic-exam-name">Kiểm tra Giữa kỳ - TOEIC Reading 2024</span><span class="toeic-subtext">ENG01_MID_01 · Cập nhật 12/04/2024</span></td>
+                                        <td>75 phút</td><td>100 câu</td><td>342</td>
+                                        <td><span class="toeic-status toeic-status-live">Đang phát hành</span></td><td>TS. Lê Hoàng Nam</td>
+                                        <td><div class="toeic-table-actions"><button class="toeic-icon-btn" type="button" data-open-editor aria-label="Chỉnh sửa đề"><i class="fas fa-pen" aria-hidden="true"></i></button><button class="toeic-icon-btn" type="button" aria-label="Xem trước"><i class="fas fa-eye" aria-hidden="true"></i></button></div></td>
+                                    </tr>
+                                    <tr data-exam-row data-status="Đang phát hành">
+                                        <td><span class="toeic-exam-name">Đề ôn tập Reading - Đợt 02</span><span class="toeic-subtext">ENG01_REV_02 · Cập nhật 09/04/2024</span></td>
+                                        <td>75 phút</td><td>100 câu</td><td>128</td>
+                                        <td><span class="toeic-status toeic-status-live">Đang phát hành</span></td><td>ThS. Trần Thu Hà</td>
+                                        <td><div class="toeic-table-actions"><button class="toeic-icon-btn" type="button" data-open-editor aria-label="Chỉnh sửa đề"><i class="fas fa-pen" aria-hidden="true"></i></button><button class="toeic-icon-btn" type="button" aria-label="Xem trước"><i class="fas fa-eye" aria-hidden="true"></i></button></div></td>
+                                    </tr>
+                                    <tr data-exam-row data-status="Bản nháp">
+                                        <td><span class="toeic-exam-name">Luyện tập Reading Chủ điểm HIX</span><span class="toeic-subtext">ENG02_PRACTICE_01 · Lưu 08/04/2024</span></td>
+                                        <td>75 phút</td><td>100 câu</td><td>—</td>
+                                        <td><span class="toeic-status toeic-status-draft">Bản nháp</span></td><td>TS. Lê Hoàng Nam</td>
+                                        <td><div class="toeic-table-actions"><button class="toeic-icon-btn" type="button" data-open-editor aria-label="Chỉnh sửa đề"><i class="fas fa-pen" aria-hidden="true"></i></button><button class="toeic-icon-btn" type="button" aria-label="Tùy chọn"><i class="fas fa-ellipsis-h" aria-hidden="true"></i></button></div></td>
+                                    </tr>
+                                    <tr data-exam-row data-status="Đã kết thúc">
+                                        <td><span class="toeic-exam-name">Khảo sát đầu khóa TOEIC Reading 2024</span><span class="toeic-subtext">ENG00_PLACEMENT · Kết thúc 24/03/2024</span></td>
+                                        <td>75 phút</td><td>100 câu</td><td>890</td>
+                                        <td><span class="toeic-status toeic-status-done">Đã kết thúc</span></td><td>ThS. Đỗ Minh Quân</td>
+                                        <td><div class="toeic-table-actions"><button class="toeic-icon-btn" type="button" data-open-editor aria-label="Xem đề"><i class="fas fa-eye" aria-hidden="true"></i></button></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="toeic-pagination"><span>Hiển thị 1–4 trong 24 đề</span><div><button class="toeic-icon-btn" type="button" aria-label="Trang trước"><i class="fas fa-chevron-left" aria-hidden="true"></i></button> &nbsp; 1 &nbsp; 2 &nbsp; 3 &nbsp; … &nbsp; 6 &nbsp; <button class="toeic-icon-btn" type="button" aria-label="Trang sau"><i class="fas fa-chevron-right" aria-hidden="true"></i></button></div></div>
+                    </div>
+                </div>
+
+                <div data-admin-screen="editor" hidden>
+                    <div class="toeic-breadcrumb"><button class="toeic-btn" type="button" data-back-dashboard><i class="fas fa-arrow-left" aria-hidden="true"></i> Danh sách đề</button></div>
+                    <div class="toeic-page-heading">
+                        <div><h1>Tạo đề thi mới</h1><p>Thiết lập thông tin và nội dung đề TOEIC Reading.</p></div>
+                        <span class="toeic-status toeic-status-draft">Bản nháp</span>
+                    </div>
+                    <section class="toeic-card docx-import-card" aria-labelledby="docxImportTitle">
+                        <div class="toeic-card-head">
+                            <div>
+                                <h2 id="docxImportTitle">Tải đề thi từ Word (.docx)</h2>
+                                <span class="toeic-subtext">Tệp được gửi lên máy chủ để phân tích; chưa lưu đề cho đến khi bạn xác nhận.</span>
+                            </div>
+                            <span class="toeic-status toeic-status-draft">Tối đa 25 MB</span>
+                        </div>
+                        <div class="toeic-card-body">
+                            <input id="examFile" type="file" accept=".docx" hidden />
+                            <div class="docx-dropzone" id="docxDropzone" tabindex="0" role="button" aria-controls="examFile" aria-label="Chọn hoặc kéo thả tệp Word DOCX">
+                                <span class="docx-dropzone-icon"><i class="fas fa-file-word" aria-hidden="true"></i></span>
+                                <strong>Kéo thả file Word vào đây</strong>
+                                <span class="toeic-subtext">Chỉ chấp nhận .docx, dung lượng tối đa 25 MB</span>
+                                <button class="toeic-btn toeic-btn-soft" type="button" id="chooseDocx"><i class="fas fa-folder-open" aria-hidden="true"></i> Chọn file Word</button>
+                            </div>
+                            <div class="docx-file-row" id="docxFileRow" hidden>
+                                <span class="docx-file-icon"><i class="fas fa-file-word" aria-hidden="true"></i></span>
+                                <div class="docx-file-info">
+                                    <strong id="fileName">Chưa chọn tệp</strong>
+                                    <small id="fileSize" class="toeic-subtext"></small>
+                                </div>
+                                <span class="toeic-status toeic-status-draft" id="uploadStatus">Chưa tải lên</span>
+                            </div>
+                            <div class="toeic-notice" id="importNotice" role="status" aria-live="polite"></div>
+                            <div class="docx-actions">
+                                <button class="toeic-btn toeic-btn-primary" type="button" id="importDocx" disabled><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> Nhập và xem trước</button>
+                                <button class="toeic-btn" type="button" id="cancelDocx" disabled>Hủy file</button>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="toeic-editor-grid">
+                        <div>
+                            <section class="toeic-card">
+                                <div class="toeic-card-head"><h2>Thông tin đề thi</h2></div>
+                                <div class="toeic-card-body">
+                                    <form id="examEditorForm">
+                                        @Html.AntiForgeryToken()
+                                        <div class="toeic-form-grid">
+                                            <div class="toeic-form-field full"><label for="examTitle">Tên đề thi</label><input id="examTitle" maxlength="200" required placeholder="Tên đề thi" /></div>
+                                            <div class="toeic-form-field"><label for="examCode">Mã đề</label><input id="examCode" maxlength="64" pattern="[A-Za-z0-9_-]+" required placeholder="Ví dụ: TOEIC-READING-01" /></div>
+                                            <div class="toeic-form-field"><label for="examDuration">Thời gian (phút)</label><input id="examDuration" type="number" min="1" max="300" value="75" required /></div>
+                                            <div class="toeic-form-field full"><label for="examQuestionCount">Số câu đã nhập từ Word</label><input id="examQuestionCount" type="number" readonly value="0" /></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </section>
+                            <section class="toeic-card" style="margin-top: 16px">
+                                <div class="toeic-card-head"><h2>Cấu trúc đề thi</h2><button class="toeic-btn toeic-btn-soft" type="button"><i class="fas fa-plus" aria-hidden="true"></i> Thêm Part</button></div>
+                                <div class="toeic-card-body">
+                                    <div class="toeic-part-list">
+                                        <div class="toeic-part-row"><span class="toeic-part-number">P5</span><div><strong>Incomplete Sentences</strong><small><span data-part-count="5">0</span> câu · Ngữ pháp và từ vựng</small></div><button class="toeic-icon-btn ml-auto" type="button" data-add-question-part="5" aria-label="Thêm câu hỏi Part 5"><i class="fas fa-plus" aria-hidden="true"></i></button></div>
+                                        <div class="toeic-part-row"><span class="toeic-part-number">P6</span><div><strong>Text Completion</strong><small><span data-part-count="6">0</span> câu · Hoàn thành đoạn văn</small></div><button class="toeic-icon-btn ml-auto" type="button" data-add-question-part="6" aria-label="Thêm câu hỏi Part 6"><i class="fas fa-plus" aria-hidden="true"></i></button></div>
+                                        <div class="toeic-part-row"><span class="toeic-part-number">P7</span><div><strong>Reading Comprehension</strong><small><span data-part-count="7">0</span> câu · Đọc hiểu</small></div><button class="toeic-icon-btn ml-auto" type="button" data-add-question-part="7" aria-label="Thêm câu hỏi Part 7"><i class="fas fa-plus" aria-hidden="true"></i></button></div>
+                                    </div>
+                                    <div class="toeic-preview" id="importedQuestionPreview" aria-live="polite">
+                                        <div class="toeic-imported-question-head">
+                                            <strong><i class="fas fa-file-alt" aria-hidden="true"></i> Câu hỏi xem trước (<span id="previewQuestionCount">0</span>)</strong>
+                                            <button class="toeic-btn toeic-btn-soft" type="button" id="addQuestion" disabled><i class="fas fa-plus" aria-hidden="true"></i> Thêm câu hỏi</button>
+                                        </div>
+                                        <p class="toeic-subtext" id="previewEmptyState">Sau khi tải và phân tích file Word, câu hỏi sẽ hiển thị ở đây để bạn kiểm tra và chỉnh sửa.</p>
+                                        <div id="previewQuestionList"></div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div>
+                            <section class="toeic-card">
+                                <div class="toeic-card-head"><h2>Mở bản nháp đã lưu</h2></div>
+                                <div class="toeic-card-body">
+                                    <label class="toeic-form-field" for="savedExamId">
+                                        <span class="toeic-subtext">Nhập ID đề đã lưu để tải nội dung từ database</span>
+                                        <input id="savedExamId" type="number" min="1" step="1" placeholder="ID đề thi" />
+                                    </label>
+                                    <button class="toeic-btn toeic-btn-soft" type="button" id="loadSavedExam">Mở đề</button>
+                                </div>
+                            </section>
+                            <section class="toeic-card">
+                                <div class="toeic-card-head"><h2>Tiến độ cấu hình</h2><span class="toeic-subtext"><span id="configuredPartsCount">0</span> / 3 Parts</span></div>
+                                <div class="toeic-card-body">
+                                    <div class="toeic-part-row"><span class="toeic-part-number">1</span><div><strong>Part 5</strong><small><span data-part-count="5">0</span> câu hỏi</small></div><span class="toeic-status toeic-status-draft ml-auto" data-part-state="5">Chưa có</span></div>
+                                    <div class="toeic-part-row" style="margin-top: 9px"><span class="toeic-part-number">2</span><div><strong>Part 6</strong><small><span data-part-count="6">0</span> câu hỏi</small></div><span class="toeic-status toeic-status-draft ml-auto" data-part-state="6">Chưa có</span></div>
+                                    <div class="toeic-part-row" style="margin-top: 9px"><span class="toeic-part-number">3</span><div><strong>Part 7</strong><small><span data-part-count="7">0</span> câu hỏi</small></div><span class="toeic-status toeic-status-draft ml-auto" data-part-state="7">Chưa có</span></div>
+                                    <p class="toeic-subtext" style="margin: 13px 0 0">Tổng cộng: <span id="totalQuestionCount">0</span> câu · <span id="summaryDuration">75</span> phút</p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="toeic-notice" id="editorNotice" role="status" aria-live="polite"></div>
+                    <div class="toeic-editor-footer">
+                        <button class="toeic-btn" type="button" data-back-dashboard>Hủy</button>
+                        <button class="toeic-btn" type="button" id="saveDraft" disabled>Lưu bản nháp</button>
+                        <button class="toeic-btn toeic-btn-primary" type="button" id="publishExam" disabled><span id="publishExamLabel">Xuất bản đề thi</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="studentWorkspace" class="student-wrap" hidden>
+                <div class="toeic-demo-note">Bản xem thử · dữ liệu và kết quả minh họa, chưa kết nối máy chủ.</div>
+                <div data-student-screen="list">
+                    <div class="student-overview">
+                        <p>Chào buổi sáng,</p>
+                        <h1>Nguyễn Văn A</h1>
+                        <div class="student-score-row">
+                            <div class="student-score"><strong>410</strong><small>Điểm TOEIC gần nhất</small></div>
+                            <div class="student-score"><strong>06</strong><small>Bài đã hoàn thành</small></div>
+                            <div class="student-score"><strong>04</strong><small>Bài chưa làm</small></div>
+                        </div>
+                    </div>
+                    <div class="student-section-heading"><h2>Đề thi được giao</h2><span class="toeic-subtext">04 đề mới</span></div>
+                    <div class="student-exam-list">
+                        <article class="toeic-card student-exam">
+                            <div class="student-exam-top"><span class="student-exam-icon"><i class="fas fa-file-alt" aria-hidden="true"></i></span><div><h3>Kiểm tra Giữa kỳ - TOEIC Reading 2024</h3><span class="toeic-subtext">ENG01_MID_01 · Hạn nộp 24/04/2024</span></div></div>
+                            <div class="student-exam-meta"><span><i class="far fa-clock" aria-hidden="true"></i> 75 phút</span><span><i class="far fa-question-circle" aria-hidden="true"></i> 100 câu hỏi</span><span><i class="fas fa-signal" aria-hidden="true"></i> Độ khó: Trung bình</span></div>
+                            <div class="student-exam-bottom"><span class="toeic-status toeic-status-live">Chưa làm</span><button class="toeic-btn toeic-btn-primary" type="button" data-open-exam>Chi tiết <i class="fas fa-arrow-right" aria-hidden="true"></i></button></div>
+                        </article>
+                        <article class="toeic-card student-exam">
+                            <div class="student-exam-top"><span class="student-exam-icon"><i class="fas fa-book" aria-hidden="true"></i></span><div><h3>Luyện tập Reading - Chủ điểm HIX</h3><span class="toeic-subtext">ENG02_PRACTICE_01 · Không giới hạn</span></div></div>
+                            <div class="student-exam-meta"><span><i class="far fa-clock" aria-hidden="true"></i> 75 phút</span><span><i class="far fa-question-circle" aria-hidden="true"></i> 100 câu hỏi</span><span><i class="fas fa-signal" aria-hidden="true"></i> Độ khó: Cơ bản</span></div>
+                            <div class="student-exam-bottom"><span class="toeic-status toeic-status-draft">Đang luyện tập</span><button class="toeic-btn toeic-btn-soft" type="button" data-open-exam>Tiếp tục</button></div>
+                        </article>
+                    </div>
+                </div>
+
+                <div data-student-screen="detail" hidden>
+                    <div class="toeic-breadcrumb"><button class="toeic-btn" type="button" data-student-nav="list"><i class="fas fa-arrow-left" aria-hidden="true"></i> Danh sách đề</button></div>
+                    <article class="toeic-card student-detail-card">
+                        <span class="toeic-status toeic-status-live">TOEIC ACADEMIC</span>
+                        <h1 class="student-detail-title" style="margin-top: 12px">Bài kiểm tra Giữa kỳ - TOEIC Reading 2024</h1>
+                        <p class="student-detail-description">Đánh giá kỹ năng đọc hiểu tiếng Anh qua các dạng câu hỏi TOEIC Reading. Hãy chuẩn bị trước khi bắt đầu.</p>
+                        <div class="student-info-grid"><div class="student-info"><strong>75 phút</strong><small>Thời lượng</small></div><div class="student-info"><strong>100 câu</strong><small>Số lượng</small></div><div class="student-info"><strong>24/04</strong><small>Hạn nộp</small></div></div>
+                        <section class="student-rules"><h3><i class="fas fa-clipboard-check" aria-hidden="true"></i> Quy chế phòng thi</h3><ul><li>Đồng hồ đếm ngược 75 phút sẽ bắt đầu khi bạn vào bài thi.</li><li>Hệ thống tự lưu lựa chọn của bạn trong phiên làm bài.</li><li>Trả lời tất cả câu hỏi trước khi nộp bài để có kết quả đầy đủ.</li><li>Không đóng trình duyệt trong khi bài thi đang diễn ra.</li></ul></section>
+                        <button class="toeic-btn toeic-btn-primary student-wide-btn" type="button" data-start-exam>Bắt đầu làm bài <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                        <p class="toeic-subtext" style="margin: 10px 0 0; text-align: center">Vui lòng xác nhận trước khi bắt đầu.</p>
+                    </article>
+                </div>
+
+                <div data-student-screen="exam" hidden>
+                    <div class="test-header">
+                        <div><h2>Kiểm tra Giữa kỳ - TOEIC Reading</h2><span class="toeic-subtext">Part 7 · Reading Comprehension</span></div>
+                        <div class="test-timer" id="examTimer" aria-live="off">75:00</div>
+                    </div>
+                    <div class="test-part-tabs" aria-label="Các phần thi"><button class="test-part-tab" type="button">Part 5</button><button class="test-part-tab" type="button">Part 6</button><button class="test-part-tab active" type="button">Part 7</button></div>
+                    <div class="test-layout">
+                        <article class="toeic-card">
+                            <div class="toeic-card-body">
+                                <span class="toeic-status toeic-status-live">Câu <span id="questionIndex">149</span> / 200</span>
+                                <div class="test-passage"><p><strong>To: All Department Staff<br />From: Clara Reynolds, Event Coordinator<br />Date: October 18, 2024<br />Subject: Update: Marketing Seminar Venue Change</strong></p><p>Dear Colleagues,</p><p>Please note that tomorrow morning’s seminar on Digital Marketing has been moved to the Meridian Conference Room on the third floor. The start time remains unchanged at 9:30 A.M.</p><p>Guest speaker Dr. Ronald Henderson will present the latest digital strategies. Please bring your employee badges for automated attendance scanning at the door.</p><p>Warm regards,<br />Clara Morgan<br /><small>Lead Coordinator, Nexus Corporate Events</small></p></div>
+                                <h2 class="test-question">What is indicated about the marketing seminar tomorrow morning?</h2>
+                                <div class="test-answers" role="radiogroup" aria-label="Chọn đáp án">
+                                    <label class="test-answer"><input type="radio" name="answer" value="A" /><span><strong>A</strong> &nbsp; It will be rescheduled to next Monday.</span></label>
+                                    <label class="test-answer"><input type="radio" name="answer" value="B" /><span><strong>B</strong> &nbsp; It has been moved to Conference Room B on the third floor.</span></label>
+                                    <label class="test-answer"><input type="radio" name="answer" value="C" /><span><strong>C</strong> &nbsp; Participants must bring their own laptop computers.</span></label>
+                                    <label class="test-answer"><input type="radio" name="answer" value="D" /><span><strong>D</strong> &nbsp; The guest speaker will arrive by train.</span></label>
+                                </div>
+                                <div class="test-question-actions"><button class="toeic-btn" type="button" data-question-step="-1"><i class="fas fa-chevron-left" aria-hidden="true"></i> Câu trước</button><button class="toeic-btn" id="markQuestion" type="button">Đánh dấu</button><button class="toeic-btn toeic-btn-primary" type="button" data-question-step="1">Câu tiếp theo <i class="fas fa-chevron-right" aria-hidden="true"></i></button></div>
+                            </div>
+                        </article>
+                        <aside class="toeic-card">
+                            <div class="toeic-card-head"><h3>Câu trả lời</h3><span class="toeic-subtext">149 / 200</span></div>
+                            <div class="toeic-card-body">
+                                <div class="toeic-subtext">Câu hỏi trong Part 7</div>
+                                <div class="test-question-grid" id="questionGrid" aria-label="Chọn số câu"></div>
+                                <div class="test-confirm" id="submitPrompt" hidden>
+                                    <strong>Nộp bài thi?</strong>
+                                    <p>Bạn đã trả lời <span id="answeredCount">0</span> câu. Bạn có thể quay lại kiểm tra trước khi nộp.</p>
+                                    <button class="toeic-btn toeic-btn-primary" type="button" data-confirm-submit>Nộp bài</button>
+                                    <button class="toeic-btn" type="button" data-cancel-submit>Tiếp tục làm bài</button>
+                                </div>
+                                <button class="toeic-btn toeic-btn-primary student-wide-btn" type="button" id="showSubmit">Nộp bài thi</button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+
+                <div data-student-screen="result" hidden>
+                    <article class="toeic-card student-detail-card">
+                        <span class="toeic-status toeic-status-live"><i class="fas fa-check-circle" aria-hidden="true"></i> Hoàn thành bài thi</span>
+                        <h1 class="student-detail-title" style="margin-top: 12px">Kết quả TOEIC Reading</h1>
+                        <p class="toeic-subtext">Kiểm tra Giữa kỳ · Thời gian hoàn thành 68 phút</p>
+                        <div class="result-score"><strong>410</strong><span>Điểm TOEIC Reading (ước tính)</span></div>
+                        <div class="result-breakdown"><div><strong>84</strong><small>Số câu đúng</small></div><div><strong>12</strong><small>Số câu sai</small></div><div><strong>04</strong><small>Chưa trả lời</small></div></div>
+                        <div class="student-section-heading"><h2>Phân tích theo Part</h2></div>
+                        <div class="toeic-part-list">
+                            <div class="toeic-part-row"><span class="toeic-part-number">P5</span><div><strong>Incomplete Sentences</strong><small>27 / 30 câu đúng</small></div><span class="toeic-status toeic-status-live ml-auto">90%</span></div>
+                            <div class="toeic-part-row"><span class="toeic-part-number">P6</span><div><strong>Text Completion</strong><small>13 / 16 câu đúng</small></div><span class="toeic-status toeic-status-live ml-auto">81%</span></div>
+                            <div class="toeic-part-row"><span class="toeic-part-number">P7</span><div><strong>Reading Comprehension</strong><small>44 / 54 câu đúng</small></div><span class="toeic-status toeic-status-live ml-auto">81%</span></div>
+                        </div>
+                        <button class="toeic-btn toeic-btn-primary student-wide-btn" type="button" data-student-nav="list">Về trang chủ danh sách đề</button>
+                    </article>
+                </div>
+
+                <nav class="student-bottom-nav" aria-label="Điều hướng học viên">
+                    <button class="student-nav-btn active" type="button" data-student-nav="list"><i class="fas fa-home" aria-hidden="true"></i>Đề thi</button>
+                    <button class="student-nav-btn" type="button" data-student-nav="list"><i class="fas fa-bookmark" aria-hidden="true"></i>Lịch thi</button>
+                    <button class="student-nav-btn" type="button" data-student-nav="result"><i class="fas fa-chart-bar" aria-hidden="true"></i>Kết quả</button>
+                    <button class="student-nav-btn" type="button" data-student-nav="list"><i class="fas fa-user-circle" aria-hidden="true"></i>Hồ sơ</button>
+                </nav>
+            </section>
+            <div class="toeic-notice success" id="appNotice" role="status" aria-live="polite"></div>
+        </main>
+    </div>
+</div>

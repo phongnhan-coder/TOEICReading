@@ -1,0 +1,45 @@
+@baseUrl = https://localhost:44312
+
+### Preview a real DOCX file (copy the antiforgery token from the signed-in page)
+POST {{baseUrl}}/api/toeic-exams/import-preview
+Content-Type: multipart/form-data; boundary=ToeicDocxBoundary
+
+--ToeicDocxBoundary
+Content-Disposition: form-data; name="__RequestVerificationToken"
+
+{{antiforgeryToken}}
+--ToeicDocxBoundary
+Content-Disposition: form-data; name="file"; filename="your-real-exam.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< ./your-real-exam.docx
+--ToeicDocxBoundary--
+
+### Save the reviewed preview as a draft (use the actual response from the preview and a fresh antiforgery token)
+POST {{baseUrl}}/api/toeic-exams
+Content-Type: application/json
+RequestVerificationToken: {{antiforgeryToken}}
+
+{
+  "title": "{{reviewedTitle}}",
+  "code": "{{uniqueExamCode}}",
+  "durationMinutes": 75,
+  "sourceFileName": "{{sourceFileName}}",
+  "questions": [
+    {
+      "part": 5,
+      "number": 1,
+      "questionText": "{{reviewedQuestionText}}",
+      "passage": null,
+      "optionA": "{{reviewedOptionA}}",
+      "optionB": "{{reviewedOptionB}}",
+      "optionC": "{{reviewedOptionC}}",
+      "optionD": "{{reviewedOptionD}}",
+      "correctAnswer": null
+    }
+  ]
+}
+
+### Read saved draft metadata
+GET {{baseUrl}}/api/toeic-exams/{{savedExamId}}
+Accept: application/json
